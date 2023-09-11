@@ -4,8 +4,8 @@ pragma solidity 0.8.21;
 import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { AbstractPortal } from "./lib/verax/interface/AbstractPortal.sol";
-import { AttestationPayload } from "./lib/verax/types/Structs.sol";
+import { AbstractPortal } from "./interface/AbstractPortal.sol";
+import { AttestationPayload } from "./types/Structs.sol";
 
 contract PADOPortal is AbstractPortal, EIP712, Ownable {
   struct AttestationRequestData {
