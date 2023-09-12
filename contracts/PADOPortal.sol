@@ -37,6 +37,7 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
   error AccessDenied();
   error NoRevocation();
   error NoBulkRevocation();
+  error WrongMethod();
 
   uint64 constant NO_EXPIRATION_TIME = 0;
   string public constant VERSION = "0.1";
@@ -51,6 +52,10 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
     _name = name;
     _fee = feeParams;
     _receiveAddr = recvAddr;
+  }
+
+  function initialize(address[] calldata _modules, address _router) public override onlyOwner {
+    super.initialize(_modules, _router);
   }
 
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
@@ -92,7 +97,7 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
     }
 
     if (_fee > 0) {
-      require(msg.value >= _fee, 'less than fee');
+      require(msg.value >= _fee * attestationsRequests.length, 'less than fee');
       (bool success, ) = _receiveAddr.call{value: msg.value}(new bytes(0));
       require(success, 'transfer failed');
     }
@@ -111,6 +116,20 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
     }
 
     super.bulkAttest(attestationsPayloads, validationPayloads);
+  }
+
+  function attest(
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory /*validationPayload*/
+  ) public payable override {
+    revert WrongMethod();
+  }
+
+  function bulkAttest(
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
+  ) public payable override {
+    revert WrongMethod();
   }
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {
