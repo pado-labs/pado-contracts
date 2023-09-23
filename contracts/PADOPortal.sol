@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { AbstractPortal } from "./interface/AbstractPortal.sol";
-import { AttestationPayload } from "./types/Structs.sol";
+import { EIP712 } from "openzeppelin-contracts/contracts/utils/cryptography/EIP712.sol";
+import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
+import { AbstractPortal } from "../interface/AbstractPortal.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 
 contract PADOPortal is AbstractPortal, EIP712, Ownable {
   struct AttestationRequestData {
@@ -48,28 +48,13 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
   uint256 private _fee;
   address payable private _receiveAddr;
 
-  constructor(string memory name, uint256 feeParams, address payable recvAddr) EIP712(name, VERSION) {
+  constructor(address[] memory _modules, address _router, 
+  string memory name, uint256 feeParams, address payable recvAddr) 
+  AbstractPortal(_modules, _router) EIP712(name, VERSION) {
     _name = name;
     _fee = feeParams;
     _receiveAddr = recvAddr;
   }
-
-  function initialize(address[] calldata _modules, address _router) public override onlyOwner {
-    super.initialize(_modules, _router);
-  }
-
-  function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
-
-  function _afterAttest() internal override {}
-
-  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
-
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) internal override {}
-
-  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
 
   function attest(DelegatedProxyAttestationRequest memory attestationRequest) external payable {
     _verifyAttest(attestationRequest);
@@ -121,22 +106,38 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
   function attest(
     AttestationPayload memory /*attestationPayload*/,
     bytes[] memory /*validationPayload*/
-  ) public payable override {
+  ) public override payable {
     revert WrongMethod();
   }
 
   function bulkAttest(
     AttestationPayload[] memory /*attestationsPayloads*/,
     bytes[][] memory /*validationPayloads*/
-  ) public payable override {
+  ) public override payable {
     revert WrongMethod();
   }
 
-  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {
+  function replace(
+    bytes32 /*attestationId*/,
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory /*validationPayloads*/
+  ) public override payable {
+    revert WrongMethod();
+  }
+
+  function bulkReplace(
+    bytes32[] memory /*attestationIds*/,
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
+  ) public override payable {
+    revert WrongMethod();
+  }
+
+  function revoke(bytes32 /*attestationId*/) public override pure {
     revert NoRevocation();
   }
 
-  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) public pure override {
+  function bulkRevoke(bytes32[] memory /*attestationIds*/) public override pure {
     revert NoBulkRevocation();
   }
 
@@ -202,4 +203,6 @@ contract PADOPortal is AbstractPortal, EIP712, Ownable {
   function _getAttester() public view override returns (address) {
     return owner();
   }
+
+  function withdraw(address payable to, uint256 amount) external override onlyOwner {}
 }
