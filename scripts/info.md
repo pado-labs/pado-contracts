@@ -1,0 +1,6 @@
+> npx hardhat run --network sepolia scripts/deployeasproxyupgradeable.js
+
+Deploying PermissionedEIP712ProxyUpgradeable...
+Proxy is at 0x140Bd8EaAa07d49FD98C73aad908e69a75867336
+Implementation is at 0xf66FFA25C4DDf6A4D9f235Eb701deDE37A9a53C2
+adminAddress is at 0x2111b22927CDD20aEdcf6b0C222d46500658aeB1

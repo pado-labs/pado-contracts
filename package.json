@@ -1,0 +1,44 @@
+{
+  "name": "tmp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "node": "npx hardhat node",
+    "deploy:polygonnft": "npx hardhat run --network polygon scripts/deploy.js",
+    "deploy:arbitrumoneeasproxy": "npx hardhat run --network arbitrumone scripts/deployeasproxy.js",
+    "deploynft": "npx hardhat run --network localhost scripts/deploy.js",
+    "deploy:sepolianft": "npx hardhat run --network sepolia scripts/deploy.js",
+    "deploy:sepoliaeasproxy": "npx hardhat run --network sepolia scripts/deployeasproxy.js",
+    "deploy:sepoliaeasproxyupgradeable": "npx hardhat run --network sepolia scripts/deployeasproxyupgradeable.js",
+    "update:arbitrumoneeasproxy": "npx hardhat run --network arbitrumone scripts/modifyeasproxy.js",
+    "deploy:bsctestneteasproxyupgradeable": "npx hardhat run --network bsctestnet scripts/deployeasproxyupgradeable.js",
+    "upgrade:bsctestneteasproxyupgradeable": "npx hardhat run --network bsctestnet scripts/upgradeEasProxyUpGradeable.js",
+    "update:bsctestneteasproxyupgradeable": "npx hardhat run --network bsctestnet scripts/modifyeasproxy.js",
+    "deploy:bsceasproxyupgradeable": "npx hardhat run --network bsc scripts/deployeasproxyupgradeable.js",
+    "upgrade:bsceasproxyupgradeable": "npx hardhat run --network bsc scripts/upgradeEasProxyUpGradeable.js",
+    "update:bsceasproxyupgradeable": "npx hardhat run --network bsc scripts/modifyeasproxy.js",
+    "deploy:mumbaiEthSignUpgradeable": "npx hardhat run --network mumbai scripts/deployethsignproxyupgradeable.js",
+    "upgrade:mumbaiEthSignUpgradeable": "npx hardhat run --network mumbai scripts/upgradeETHSignProxyUpGradeable.js",
+    "deploy:opbnbtestneteasproxyupgradeable": "npx hardhat run --network opbnbtestnet scripts/deployeasproxyupgradeable.js",
+    "upgrade:opbnbtestneteasproxyupgradeable": "npx hardhat run --network opbnbtestnet scripts/upgradeEasProxyUpGradeable.js",
+    "update:opbnbtestneteasproxyupgradeable": "npx hardhat run --network opbnbtestnet scripts/modifyeasproxy.js",
+    "clean": "npx hardhat clean"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/hardhat-upgrades": "^2.3.1",
+    "erc721a-upgradeable": "^4.2.3",
+    "hardhat": "^2.16.1"
+  },
+  "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.2.0-beta.0",
+    "@openzeppelin/contracts": "^4.9.2",
+    "@openzeppelin/contracts-upgradeable": "^4.9.2",
+    "dotenv": "^16.3.1"
+  }
+}
